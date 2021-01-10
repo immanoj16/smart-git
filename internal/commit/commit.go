@@ -10,15 +10,18 @@ import (
 
 // Cmd is the helper for commit command 
 func Cmd() {
-	branchName, err := git.GetCurrentBranchName()
-	if err != nil {
+	g := git.New(".")
+
+	g.GetCurrentBranchName()
+	if err := g.Err(); err != nil {
 		log.Fatal(err)
 	}
+	
 
-	newBranchName, err := utils.GetJIRATicketFromBranchName(branchName)
+	newBranchName, err := utils.GetJIRATicketFromBranchName(g.BranchName)
 	if err != nil {
 		fmt.Println(err)
-		newBranchName = branchName
+		newBranchName = g.BranchName
 	}
 
 	fmt.Println(newBranchName)

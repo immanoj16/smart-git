@@ -6,36 +6,50 @@ import (
 	"github.com/go-git/go-git/v5"
 )
 
+// Git is a struct
+type Git struct {
+	Repository *git.Repository
+	Path string
+	err error
+	BranchName string
+}
+
+// New used to get a new instance of Git struct
+func New(path string) *Git {
+	return &Git{
+		Path: path,
+	}
+}
+
 // GetCurrentBranchName used to get currect active branch name
-func GetCurrentBranchName() (string, error) {
-	repo, err := getCurrentRepository()
-	if err != nil {
-		return "", err
-	}
-
-	branchName, err := getCurrentBranchFromRepository(repo)
-	if err != nil {
-		return "", err
-	}
-	
-	return branchName, nil
+func (g *Git) GetCurrentBranchName() {
+	g.getCurrentRepository()
+	g.getCurrentBranchFromRepository()
 }
 
-func getCurrentRepository() (*git.Repository, error) {
-	repo, err := git.PlainOpen(".")
+func (g *Git) getCurrentRepository() {
+	repo, err := git.PlainOpen(g.Path)
 	if err != nil {
-		return nil, err
+		g.err = err
 	}
-	return repo, nil
+	g.Repository = repo
 }
 
-func getCurrentBranchFromRepository(repo *git.Repository) (string, error) {
-	headRef, err := repo.Head()
+func (g *Git) getCurrentBranchFromRepository() {
+	headRef, err := g.Repository.Head()
 	if err != nil {
-		return "", err
+		g.err = err
 	}
 
 	refBranchName := headRef.Name().String()
 	splitedBranchName := strings.Split(refBranchName, "/")
-	return splitedBranchName[len(splitedBranchName)-1], nil
+	g.BranchName = splitedBranchName[len(splitedBranchName)-1]
+}
+
+// Err used to get the git errors
+func (g *Git) Err() error {
+	if g.err != nil {
+		return g.err
+	}
+	return nil
 }
