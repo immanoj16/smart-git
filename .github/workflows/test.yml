@@ -23,8 +23,11 @@ jobs:
         env:
           GOPROXY: https://proxy.golang.org
 
+      - name: Add task
+        run: go install github.com/go-task/task/v3/cmd/task@latest
+
       - name: Build
         run: go build -o ./bin/smart-git -v
 
       - name: Test
-        run: ./bin/smart-git test
+        run: task test
