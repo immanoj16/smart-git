@@ -12,8 +12,8 @@ import (
 // Git is a struct
 type Git struct {
 	Repository *git.Repository
-	Dir string
-	err error
+	Dir        string
+	err        error
 	BranchName string
 }
 

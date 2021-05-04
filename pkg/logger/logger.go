@@ -24,11 +24,11 @@ func getEncoder() zapcore.Encoder {
 
 func getLogWriter(fileName string) zapcore.WriteSyncer {
 	lumberJackLogger := &lumberjack.Logger{
-		Filename: fileName,
-		MaxSize: 10,
+		Filename:   fileName,
+		MaxSize:    10,
 		MaxBackups: 5,
-		MaxAge: 30,
-		Compress: false,
+		MaxAge:     30,
+		Compress:   false,
 	}
 	return zapcore.AddSync(lumberJackLogger)
 }

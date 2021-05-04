@@ -1,6 +1,7 @@
 package commit
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/immanoj16/cli-logger/logger"
@@ -9,7 +10,7 @@ import (
 )
 
 // Cmd is the helper for commit command
-func Cmd() {
+func Cmd(args []string) {
 	g := git.New(".")
 
 	g.GetCurrentBranchName()
@@ -17,11 +18,12 @@ func Cmd() {
 		log.Fatal(err)
 	}
 
-	newBranchName, err := utils.GetJIRATicketFromBranchName(g.BranchName)
+	branchName, err := utils.GetJIRATicketFromBranchName(g.BranchName)
 	if err != nil {
 		logger.Info(err.Error())
-		newBranchName = g.BranchName
+		branchName = g.BranchName
 	}
 
-	logger.Info(newBranchName)
+	logger.Info(branchName)
+	fmt.Println(args)
 }

@@ -26,8 +26,5 @@ jobs:
       - name: Add task
         run: go install github.com/go-task/task/v3/cmd/task@latest
 
-      - name: Build
-        run: go build -o ./bin/smart-git -v
-
       - name: Test
         run: task test
