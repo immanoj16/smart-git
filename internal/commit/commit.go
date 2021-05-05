@@ -1,6 +1,7 @@
 package commit
 
 import (
+	"context"
 	"fmt"
 	"log"
 
@@ -10,9 +11,7 @@ import (
 )
 
 // Cmd is the helper for commit command
-func Cmd(args []string) {
-	g := git.New(".")
-
+func Cmd(g *git.Git, args []string) {
 	g.GetCurrentBranchName()
 	if err := g.Err(); err != nil {
 		log.Fatal(err)
@@ -24,6 +23,27 @@ func Cmd(args []string) {
 		branchName = g.BranchName
 	}
 
-	logger.Info(branchName)
-	fmt.Println(args)
+	if len(args) > 0 {
+		var commitMsg string
+		if !g.Options.Header {
+			if !g.Options.Comment {
+				commitMsg = fmt.Sprintf("%s #comment %s", branchName, args[0])
+			} else {
+				commitMsg = fmt.Sprintf("%s %s", branchName, args[0])
+			}
+		} else {
+			commitMsg = fmt.Sprintf("%s", args[0])
+		}
+
+		var gitArgs []string
+		if !g.Options.Sign {
+			gitArgs = []string{"commit", "-Sm", commitMsg}
+		} else {
+			gitArgs = []string{"commit", "-m", commitMsg}
+		}
+
+		g.ExecCmd(context.Background(), "echo", gitArgs).Run()
+	} else {
+		log.Fatal("Pass commit message")
+	}
 }

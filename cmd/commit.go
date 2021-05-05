@@ -1,53 +1,35 @@
-/*
-Copyright © 2021 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
-	"github.com/immanoj16/smart-git/internal/commit"
 	"log"
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/immanoj16/smart-git/internal/commit"
+	"github.com/immanoj16/smart-git/pkg/git"
 )
 
-// commitCmd represents the commit command
-var commitCmd = &cobra.Command{
-	Use:   "commit",
-	Short: "used to commit with ticket ID and #comment flag",
-	Long:  `used to commit with ticket ID and #comment flag`,
-	PreRun: func(cmd *cobra.Command, args []string) {
-		if _, err := os.Stat(".git"); os.IsNotExist(err) {
-			log.Fatalf("Not a Git repository %s", err)
-		}
-	},
-	Run: func(cmd *cobra.Command, args []string) {
-		commit.Cmd(args)
-	},
-}
+func newCommitCmd() *cobra.Command {
+	g := git.New(".")
 
-func init() {
-	rootCmd.AddCommand(commitCmd)
+	commitCmd := &cobra.Command{
+		Use:   "commit",
+		Short: "used to commit with ticket ID and #comment flag",
+		Long:  `used to commit with ticket ID and #comment flag`,
+		PreRun: func(cmd *cobra.Command, args []string) {
+			if _, err := os.Stat(".git"); os.IsNotExist(err) {
+				log.Fatalf("Not a Git repository %s", err)
+			}
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			commit.Cmd(g, args)
+		},
+	}
 
-	// Here you will define your flags and configuration settings.
+	commitCmd.Flags().BoolVar(&g.Options.Header, "header", false, "Remove header")
+	commitCmd.Flags().BoolVarP(&g.Options.Comment, "comment", "c", false, "Remove comment")
+	commitCmd.Flags().BoolVarP(&g.Options.Sign, "sign", "s", false, "Sign")
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// commitCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// commitCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	return commitCmd
 }

@@ -15,6 +15,13 @@ type Git struct {
 	Dir        string
 	err        error
 	BranchName string
+	Options    Options
+}
+
+type Options struct {
+	Header  bool
+	Comment bool
+	Sign    bool
 }
 
 // New used to get a new instance of Git struct
