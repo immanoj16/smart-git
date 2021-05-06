@@ -16,5 +16,5 @@ func GetJIRATicketFromBranchName(branchName string) (string, error) {
 	if len(match) > 0 {
 		return match[0], nil
 	}
-	return "", fmt.Errorf("Branch name is not in the format of '%s'", branchFormat)
+	return "", fmt.Errorf("branch name is not in the format of '%s'", branchFormat)
 }
