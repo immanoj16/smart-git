@@ -19,7 +19,7 @@ tasks:
   install:
     desc: Installs Task
     cmds:
-      - go install -v
+      - go install -v -ldflags="-w -s -X main.version={{.GIT_COMMIT}}" ./cmd/smart-git
 
   cli-deps:
     desc: Downloads CLI dependencies

@@ -4,14 +4,15 @@ import (
 	"log"
 	"os"
 
+	"github.com/immanoj16/smart-git/pkg/client"
+
 	"github.com/spf13/cobra"
 
 	"github.com/immanoj16/smart-git/internal/commit"
-	"github.com/immanoj16/smart-git/pkg/git"
 )
 
-func newCommitCmd() *cobra.Command {
-	g := git.New(".")
+func newCommitCmd(client *client.Client) *cobra.Command {
+	git := client.Git
 
 	commitCmd := &cobra.Command{
 		Use:   "commit",
@@ -23,13 +24,13 @@ func newCommitCmd() *cobra.Command {
 			}
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			commit.Cmd(g, args)
+			commit.Cmd(git, args)
 		},
 	}
 
-	commitCmd.Flags().BoolVar(&g.Options.Header, "header", false, "Remove header")
-	commitCmd.Flags().BoolVarP(&g.Options.Comment, "comment", "c", false, "Remove comment")
-	commitCmd.Flags().BoolVarP(&g.Options.Sign, "sign", "s", false, "Sign")
+	commitCmd.Flags().BoolVar(&git.Options.Header, "header", false, "Remove header")
+	commitCmd.Flags().BoolVarP(&git.Options.Comment, "comment", "c", false, "Remove comment")
+	commitCmd.Flags().BoolVarP(&git.Options.Sign, "sign", "s", false, "Sign")
 
 	return commitCmd
 }

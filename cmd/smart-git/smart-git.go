@@ -3,10 +3,19 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/immanoj16/smart-git/pkg/client"
+	"github.com/immanoj16/smart-git/pkg/git"
+)
+
+var (
+	version = ""
 )
 
 func main() {
-	rootCmd := newRootCmd()
+	g := git.New(".")
+	c := client.New(g, version)
+	rootCmd := newRootCmd(c)
 
 	if err := rootCmd.Execute(); err != nil {
 		// Execute adds all child commands to the root command and sets flags appropriately.
