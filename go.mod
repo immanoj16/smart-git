@@ -4,8 +4,7 @@ go 1.15
 
 require (
 	github.com/Microsoft/go-winio v0.5.0 // indirect
-	github.com/go-git/go-billy/v5 v5.3.1 // indirect
-	github.com/go-git/go-git/v5 v5.3.0
+	github.com/go-git/go-git/v5 v5.4.2
 	github.com/google/go-cmp v0.5.5 // indirect
 	github.com/immanoj16/cli-logger v0.0.0-20210110095842-0c1a5e6e28bd
 	github.com/kevinburke/ssh_config v1.1.0 // indirect
