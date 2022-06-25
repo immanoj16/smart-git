@@ -11,7 +11,7 @@ require (
 	github.com/kevinburke/ssh_config v1.1.0 // indirect
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/sergi/go-diff v1.2.0 // indirect
-	github.com/spf13/cobra v1.1.3
+	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.7.0
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.16.0
